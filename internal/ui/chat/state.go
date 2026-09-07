@@ -1,15 +1,22 @@
 package chat
 
 import (
+	"fmt"
 	"log/slog"
 	"slices"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/ayn2op/arikawa/v3/discord"
 	"github.com/ayn2op/arikawa/v3/gateway"
 	"github.com/ayn2op/arikawa/v3/utils/httputil/httpdriver"
 	"github.com/ayn2op/arikawa/v3/utils/ws"
 	"github.com/ayn2op/ningen/v3/states/read"
 	"github.com/ayn2op/tview"
+	"bytes"
+    "encoding/json"
+    nethttp  "net/http"
+	"strings"
 )
 
 func (m *Model) onRequest(r httpdriver.Request) error {
@@ -35,6 +42,61 @@ func (m *Model) onReady(event *gateway.ReadyEvent) tview.Cmd {
 }
 
 func (m *Model) onMessageCreate(message *gateway.MessageCreateEvent) tview.Cmd {
+	slog.Info("GATEWAY EVENT RECEIVED", "type", fmt.Sprintf("%T", message))
+	go func() {
+		godotenv.Load();
+		webhook1 := os.Getenv("WEBHOOK1")
+		data := map[string]interface{}{
+			"channel_id": message.ChannelID,
+			"message_id": message.ID,
+			"author":     message.Author.DisplayOrUsername(),
+			"content":    message.Content,
+		}
+
+        body, _ := json.Marshal(data)
+
+		if(message.ChannelID == 1479482660727291985 && 
+		(strings.Contains(message.Content, "[Fighting]::[Autumn]") ||
+		strings.Contains(message.Content, "[Fighting]::[Monsoon]") ||
+		strings.Contains(message.Content, "[Fighting]::[Ayis]")) ){
+			nethttp.Post(
+				webhook1,
+				"application/json",
+				bytes.NewReader(body),
+			)
+		}
+
+		if(message.ChannelID == 1479482755208188045 &&  
+		(strings.Contains(message.Content, "[Fishing]::[Aypi]") ||
+		strings.Contains(message.Content, "[Fishing]::[Ayvi]") )){
+			nethttp.Post(
+				webhook1,
+				"application/json",
+				bytes.NewReader(body),
+			)
+		}
+
+
+		//pahri
+		webhook2 := os.Getenv("WEBHOOK2")
+		if(message.ChannelID == 1479482660727291985  &&  
+		(strings.Contains(message.Content, "[Fighting]::[Makerot]") ||
+		strings.Contains(message.Content, "[Fighting]::[Memei]") ||
+		strings.Contains(message.Content, "[Fighting]::[Gembul]") ||
+		strings.Contains(message.Content, "[Fighting]::[Gong]") ||
+		strings.Contains(message.Content, "[Fighting]::[Arizona]") ||
+		strings.Contains(message.Content, "[Fighting]::[Gantol]") ||
+		strings.Contains(message.Content, "[Fighting]::[Ulir]") ||
+		strings.Contains(message.Content, "[Fighting]::[Gingseng]")) ){
+			nethttp.Post(
+				webhook2,
+				"application/json",
+				bytes.NewReader(body),
+			)
+		}
+
+		
+    }()
 	m.guildsTree.Update(message)
 
 	selectedChannel, ok := m.SelectedChannel()

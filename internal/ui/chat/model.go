@@ -29,6 +29,9 @@ import (
 	"github.com/ayn2op/tview/layers"
 	"github.com/ayn2op/tview/text"
 	"github.com/gdamore/tcell/v3"
+    // "bytes"
+    // "encoding/json"
+    // nethttp  "net/http"
 )
 
 const typingDuration = 10 * time.Second
@@ -261,6 +264,8 @@ func (m *Model) focusNext() {
 }
 
 func (m *Model) Update(msg tview.Msg) tview.Cmd {
+	slog.Info("GATEWAY EVENT RECEIVED2", "type", fmt.Sprintf("%T", msg))
+
 	switch msg := msg.(type) {
 	case tview.InitMsg:
 		return tview.Batch(openState(m.state), listen(m.events))
