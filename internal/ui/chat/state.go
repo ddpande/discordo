@@ -56,10 +56,7 @@ func (m *Model) onMessageCreate(message *gateway.MessageCreateEvent) tview.Cmd {
 
         body, _ := json.Marshal(data)
 
-		if(message.ChannelID == 1479482660727291985 && 
-		(strings.Contains(message.Content, "[Fighting]::[Autumn]") ||
-		strings.Contains(message.Content, "[Fighting]::[Monsoon]") ||
-		strings.Contains(message.Content, "[Fighting]::[Ayis]")) ){
+		if(message.ChannelID == 1479482660727291985 ){
 			nethttp.Post(
 				webhook1,
 				"application/json",
