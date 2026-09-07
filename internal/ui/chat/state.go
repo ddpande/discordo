@@ -46,6 +46,7 @@ func (m *Model) onMessageCreate(message *gateway.MessageCreateEvent) tview.Cmd {
 	go func() {
 		godotenv.Load();
 		webhook1 := os.Getenv("WEBHOOK1")
+		webhook2 := os.Getenv("WEBHOOK2")
 		data := map[string]interface{}{
 			"channel_id": message.ChannelID,
 			"message_id": message.ID,
@@ -77,8 +78,7 @@ func (m *Model) onMessageCreate(message *gateway.MessageCreateEvent) tview.Cmd {
 		}
 
 
-		//pahri
-		webhook2 := os.Getenv("WEBHOOK2")
+		//pahri		
 		if(message.ChannelID == 1479482660727291985  &&  
 		(strings.Contains(message.Content, "[Fighting]::[Makerot]") ||
 		strings.Contains(message.Content, "[Fighting]::[Memei]") ||
