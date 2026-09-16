@@ -47,6 +47,7 @@ func (m *Model) onMessageCreate(message *gateway.MessageCreateEvent) tview.Cmd {
 		godotenv.Load();
 		webhook1 := os.Getenv("WEBHOOK1")
 		webhook2 := os.Getenv("WEBHOOK2")
+		webhook3 := os.Getenv("WEBHOOK3")
 		data := map[string]interface{}{
 			"channel_id": message.ChannelID,
 			"message_id": message.ID,
@@ -76,6 +77,20 @@ func (m *Model) onMessageCreate(message *gateway.MessageCreateEvent) tview.Cmd {
 				bytes.NewReader(body),
 			)
 		}
+
+		if(message.ChannelID == 1479482703878553702 &&  
+		(strings.Contains(message.Content, "Card] Dijatuhkan oleh"))){
+			if((strings.Contains(message.Content, "[Autumn]") ||
+				strings.Contains(message.Content, "[Monsoon]") ||
+				strings.Contains(message.Content, "[Ayvi]") )){
+					nethttp.Post(
+						webhook3,
+						"application/json",
+						bytes.NewReader(body),
+					)
+				}
+		}
+		
 
 
 		//pahri		
