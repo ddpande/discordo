@@ -82,7 +82,7 @@ func (m *Model) onMessageCreate(message *gateway.MessageCreateEvent) tview.Cmd {
 		(strings.Contains(message.Content, "Card] Dijatuhkan oleh"))){
 			if((strings.Contains(message.Content, "[Autumn]") ||
 				strings.Contains(message.Content, "[Monsoon]") ||
-				strings.Contains(message.Content, "[Ayvi]") )){
+				strings.Contains(message.Content, "[Ayis]") )){
 					nethttp.Post(
 						webhook3,
 						"application/json",
